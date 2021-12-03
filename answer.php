@@ -3,9 +3,20 @@
 @session_start();
 date_default_timezone_set('Europe/Moscow');
 if (!isset($_SESSION["tableAnswer"])) $_SESSION["tableAnswer"] = array();
-$x = (float) $_GET["x"];
-$y = (float) $_GET["y"];
-$r = (float) $_GET["r"];
+if (isset($_GET["x"])) {
+    $x = $_GET["x"];
+} else {
+    http_response_code(403);
+    exit(403);
+}
+$strY = $_GET["y"];
+$y = substr($strY, 0, 6);
+if (isset($_GET["r"])) {
+    $r = $_GET["r"];
+} else {
+    http_response_code(403);
+    exit(403);
+}
 if (checkData($x, $y, $r)) {
     $coordsStatus = checkCoordinates($x, $y, $r);
     if ($coordsStatus == "да") {
@@ -30,7 +41,7 @@ if (checkData($x, $y, $r)) {
     </tr>");
     echo end($_SESSION['tableAnswer']);
 } else {
-    http_response_code(400);
+    http_response_code(403);
     return;
 }
 
